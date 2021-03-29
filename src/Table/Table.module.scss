@@ -9,6 +9,7 @@
   position: relative;
   overflow-x: auto;
   border: 1px solid grey;
+  scroll-behaviour: smooth;
 }
 
 .table {
@@ -23,6 +24,11 @@
   top: calc(50% - 12px);
   right: -12px;
   z-index: 4;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 .addRowButton {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 
 import style from './Table.module.scss';
@@ -23,6 +23,16 @@ export const Table = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeHeaderValue, setActiveHeaderValue] = useState('');
   const [activeHeaderIndex, setActiveHeaderIndex] = useState(0);
+  const [scroll, setScroll] = useState(0);
+
+  useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollLeft = scroll;
+    }
+  }, [scroll])
+
+  const tableRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const checkUniqueColumn = (index, value) => {
     const isValue = !!value.trim().length;
@@ -65,6 +75,8 @@ export const Table = ({
 
   const addColumn = () => {
     setTableHeaders([...tableHeaders, `Column ${tableHeaders.length + 1}`]);
+    const hiddenWidth = tableRef.current.clientWidth;
+    setScroll(hiddenWidth);
   };
 
   const addRow = () => {
@@ -115,11 +127,12 @@ export const Table = ({
       >
           +
       </button>
-      <div className={style.wrapper}>
+      <div className={style.wrapper} ref={wrapperRef}>
         <table 
           className={style.table} 
           style={detectStyle('table')} 
           cellSpacing={cellSpacing}
+          ref={tableRef}
         >
           <Header 
             tableHeaders={tableHeaders} 

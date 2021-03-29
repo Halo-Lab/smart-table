@@ -44,11 +44,9 @@ export const Header = ({
                 className={style.ceil}
                 style={{...detectStyle('tableHeadCeil'), minWidth: `${minColumnSize}px` }}
                 onMouseEnter={() => {
-                  console.log('in')
                   setSelectedHeader(index)
                 }}
                 onMouseLeave={() => {
-                  console.log('out')
                   setSelectedHeader(-1)
                 }}
               >
