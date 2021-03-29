@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+  color: aqua;
+}
+
+body, html {
+  height: 100%;
+  padding: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.addColumnButton {
+  background-color: red;
+  color: white;
+}
