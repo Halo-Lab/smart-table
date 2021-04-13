@@ -1,29 +1,36 @@
+/* eslint no-param-reassign: 0 */
+
 import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import PropTypes from "prop-types";
 
-import style from './Table.module.scss';
-import { Header } from './components/Header/Header';
-import { Body } from './components/Body/Body';
-import { Modal } from './components/Modal/Modal';
+import classes from './Table.module.scss';
+import Header from './components/Header';
+import Body from './components/Body';
+import Modal from './components/Modal';
+
+import { getInitialProps } from './utils';
 
 export const Table = ({ 
-  headers = [], 
-  data = [], 
-  emptyCeil = '',
-  styleObj = {},
+  tableColumns,
+  emptyCellPlaceholder = '',
+  tableClasses = {},
   cellSpacing = "0",
   minColumnSize = 300,
-  onCeilEdit = (data) => {},
-  onCeilBlur = (data) => {},
-  onHeaderEdit = (data) => {},
-  onHeaderBlur = (data) => {},
+  onCeilEdit = (value) => value,
+  onCeilBlur = (value) => value,
+  onHeaderEdit = (value) => value,
+  onHeaderBlur = (value) => value,
 }) => {
-  const [tableHeaders, setTableHeaders] = useState([...headers]);
-  const [tableData, setTableData] = useState(data);
+  const [tableHeaders, setTableHeaders] = useState(getInitialProps(tableColumns).tableHeaders);
+  const [tableData, setTableData] = useState(getInitialProps(tableColumns).tableData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeHeaderValue, setActiveHeaderValue] = useState('');
   const [activeHeaderIndex, setActiveHeaderIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
+
+  const tableRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -31,8 +38,19 @@ export const Table = ({
     }
   }, [scroll])
 
-  const tableRef = useRef(null);
-  const wrapperRef = useRef(null);
+  const editHeaderTitle = (index, value) => {
+    const newHeaders = [...tableHeaders];
+    newHeaders[index] = value;
+    setTableHeaders([...newHeaders]);
+    const headerToEdit = tableHeaders[index];
+    const newTableData = JSON.parse(JSON.stringify(tableData));
+    newTableData.forEach(item => {
+      item[value] = item[headerToEdit];
+      delete item[headerToEdit];
+    })
+    setTableData(newTableData);
+    onHeaderBlur({data: newTableData, headers: newHeaders});
+  };
 
   const checkUniqueColumn = (index, value) => {
     const isValue = !!value.trim().length;
@@ -80,7 +98,7 @@ export const Table = ({
   };
 
   const addRow = () => {
-    let newRow = {};
+    const newRow = {};
     tableHeaders.forEach(header => {
       newRow[header] = '';
     });
@@ -88,7 +106,7 @@ export const Table = ({
   };
 
   const deleteColumn = (index) => {
-    const activeHeaderTitle = headers[index];
+    const activeHeaderTitle = tableHeaders[index];
     const newTableData = JSON.parse(JSON.stringify(tableData));
     newTableData.forEach(item => {
       delete item[activeHeaderTitle]
@@ -99,38 +117,22 @@ export const Table = ({
     setTableHeaders(newHeaders);
   }
 
-  const editHeaderTitle = (index, value) => {
-    const newHeaders = [...tableHeaders];
-    newHeaders[index] = value;
-    setTableHeaders([...newHeaders]);
-    const headerToEdit = tableHeaders[index];
-    const newTableData = JSON.parse(JSON.stringify(tableData));
-    newTableData.forEach(item => {
-      item[value] = item[headerToEdit];
-      delete item[headerToEdit];
-    })
-    setTableData(newTableData);
-    onHeaderBlur({data: newTableData, headers: newHeaders});
-  };
-
-  const detectStyle = (value) => {
-    return styleObj[value] ? styleObj[value] : {};
+  const detectClass = (key) => {
+    return tableClasses[key] || '';
   }
 
   return (
-    <div className={style.container}>
+    <div className={classes.container}>
       <button 
         type="button" 
         onClick={addColumn} 
-        style={detectStyle('addColumnButton')}
-        className={classNames(style.addButton)}
+        className={classNames(classes.addButton, detectClass('addColumnButton'))}
       >
           +
       </button>
-      <div className={style.wrapper} ref={wrapperRef}>
+      <div className={classes.wrapper} ref={wrapperRef}>
         <table 
-          className={style.table} 
-          style={detectStyle('table')} 
+          className={classNames(classes.table, detectClass('table'))} 
           cellSpacing={cellSpacing}
           ref={tableRef}
         >
@@ -138,7 +140,7 @@ export const Table = ({
             tableHeaders={tableHeaders} 
             checkUniqueColumn={checkUniqueColumn} 
             addColumn={addColumn}
-            detectStyle={detectStyle}
+            detectClass={detectClass}
             onHeaderEdit={onHeaderEdit}
             deleteColumn={deleteColumn}
             minColumnSize={minColumnSize}
@@ -147,17 +149,17 @@ export const Table = ({
             tableData={tableData}
             editCeil={editCeil}
             tableHeaders={tableHeaders}
-            emptyCeil={emptyCeil}
-            detectStyle={detectStyle}
+            emptyCellPlaceholder={emptyCellPlaceholder}
+            detectClass={detectClass}
             onCeilBlur={onCeilBlur}
             minColumnSize={minColumnSize}
           />
         </table>
       </div>
       <button 
-        className={style.addRowButton}
+        className={classNames(classes.addRowButton, detectClass('addRowButton'))}
         onClick={addRow}
-        style={detectStyle('addRowButton')}
+        type="button"
       >
         Add row
       </button>
@@ -168,14 +170,14 @@ export const Table = ({
             headerValue={activeHeaderValue} 
             checkUniqueColumn={checkUniqueColumn}
             closeModal={handleClose}
-            detectStyle={detectStyle}
+            detectClass={detectClass}
           />
         )
       }
       <button 
         type='button' 
         onClick={sendData}
-        style={detectStyle('sendButton')}
+        className={classNames(detectClass('sendButton'))}
       >
         Send data to user
       </button>
@@ -183,5 +185,22 @@ export const Table = ({
   )
 }
 
-
-///delete column
+Table.propTypes = {
+  tableColumns: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.string,
+      columnData: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
+    })
+  ).isRequired,
+  emptyCellPlaceholder: PropTypes.string.isRequired,
+  cellSpacing: PropTypes.string.isRequired,
+  onCeilEdit: PropTypes.func.isRequired,
+  onCeilBlur: PropTypes.func.isRequired,
+  onHeaderEdit: PropTypes.func.isRequired,
+  onHeaderBlur: PropTypes.func.isRequired,
+  minColumnSize: PropTypes.number.isRequired,
+  tableClasses: PropTypes.shape({}).isRequired
+}

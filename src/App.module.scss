@@ -12,7 +12,14 @@ body, html {
   box-sizing: border-box;
 }
 
-.addColumnButton {
-  background-color: red;
-  color: white;
+.table {
+  border: 2px solid black;
+}
+
+.addRowButton {
+  background-color: rgb(187, 183, 183);
+}
+
+.sendButton {
+  display: none;
 }

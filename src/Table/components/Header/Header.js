@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-
-import style from './Header.module.scss';
+import classNames from 'classnames';
+import PropTypes from "prop-types";
 import TextareaAutosize from 'react-textarea-autosize';
+import classes from './Header.module.scss';
 
-export const Header = ({ 
-  tableHeaders, checkUniqueColumn, detectStyle, onHeaderEdit, minColumnSize, deleteColumn 
+const Header = ({ 
+  tableHeaders, checkUniqueColumn, detectClass, onHeaderEdit, minColumnSize, deleteColumn 
 }) => {
   const [headers, setHeaders] = useState(tableHeaders);
   const [selectedHeader, setSelectedHeader] = useState(-1);
 
   const onEdit = (index, event) => {
-    const key = event.key;
+    const { key } = event;
     if (key === 'Enter') {
       event.preventDefault();
       checkUniqueColumn(index, event.target.value);
@@ -31,18 +32,17 @@ export const Header = ({
   }, [tableHeaders]);
 
   return (
-    <thead style={detectStyle('tableHead')}>
+    <thead className={classNames(detectClass('tableHead'))}>
       <tr 
-        style={detectStyle('tableHeadRow')} 
-
+        className={classNames(detectClass('tableHeadRow'))} 
       >
         {
           headers.map((header, index) => {
             return (
               <th 
-                key={index} 
-                className={style.ceil}
-                style={{...detectStyle('tableHeadCeil'), minWidth: `${minColumnSize}px` }}
+                key={header} 
+                className={classNames(classes.ceil, detectClass('tableHeadCeil'))}
+                style={{ minWidth: `${minColumnSize}px` }}
                 onMouseEnter={() => {
                   setSelectedHeader(index)
                 }}
@@ -53,17 +53,16 @@ export const Header = ({
                 <TextareaAutosize 
                   spellCheck="false"
                   value={header}
-                  style={detectStyle('tableHeadTextarea')}
                   onChange={(event) => handleChange(event, index)}
                   onBlur={(event) => checkUniqueColumn(index, event.target.value)}
                   onKeyDown={(event) => onEdit(index, event)}
-                  className={style.textarea}
+                  className={classNames(classes.textarea, detectClass('tableHeadTextarea'))}
                 />
                 {
                   index === selectedHeader && (
                     <button 
                       type="button"
-                      className={style.deleteButton}
+                      className={classNames(classes.deleteButton, detectClass('deleteButton'))}
                       onClick={() => deleteColumn(index)}
                     >
                       &#x2715;
@@ -78,3 +77,14 @@ export const Header = ({
     </thead>
   )
 }
+
+Header.propTypes = {
+  tableHeaders: PropTypes.arrayOf(PropTypes.string).isRequired, 
+  checkUniqueColumn: PropTypes.func.isRequired, 
+  detectClass: PropTypes.func.isRequired, 
+  onHeaderEdit: PropTypes.func.isRequired, 
+  minColumnSize: PropTypes.number.isRequired, 
+  deleteColumn: PropTypes.func.isRequired
+}
+
+export default Header;

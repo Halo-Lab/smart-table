@@ -10,6 +10,7 @@
   * tableHeadTextarea
   * addRowButton
   * addColumnButton
+  * deleteButton
   * sendButton
   * modal
   * modalOverlay
