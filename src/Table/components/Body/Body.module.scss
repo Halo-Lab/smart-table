@@ -4,10 +4,15 @@
   outline: none;
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
 }
 
 tr, td, th {
   border: 1px solid grey;
+}
+
+.tr {
+  height: 30px;
 }
 
 //need to add opportunity to delete columns

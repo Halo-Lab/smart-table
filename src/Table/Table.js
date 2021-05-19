@@ -4,14 +4,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from "prop-types";
 
-import classes from './Table.module.scss';
+import classes from './Table.module';
 import Header from './components/Header';
 import Body from './components/Body';
 import Modal from './components/Modal';
 
 import { getInitialProps } from './utils';
 
-export const Table = ({ 
+const Table = ({ 
   tableColumns,
   emptyCellPlaceholder = '',
   tableClasses = {},
@@ -21,6 +21,7 @@ export const Table = ({
   onCeilBlur = (value) => value,
   onHeaderEdit = (value) => value,
   onHeaderBlur = (value) => value,
+  onSendData = (value) => value,
 }) => {
   const [tableHeaders, setTableHeaders] = useState(getInitialProps(tableColumns).tableHeaders);
   const [tableData, setTableData] = useState(getInitialProps(tableColumns).tableData);
@@ -54,25 +55,24 @@ export const Table = ({
 
   const checkUniqueColumn = (index, value) => {
     const isValue = !!value.trim().length;
-    if (!isValue) {
-      return
-    }
+  
     const isHeaderExists = tableHeaders.findIndex(header => header === value);
     if (isHeaderExists === index) {
       return;
     }
-    if (isHeaderExists !== -1) {
+    if (isHeaderExists !== -1 || !isValue) {
       setActiveHeaderValue(value);
       setActiveHeaderIndex(index);
       setIsModalVisible(true);
-      return;
+      return
     }
     editHeaderTitle(index, value);
     setIsModalVisible(false);
   }
 
   const handleClose = () => {
-    setTableHeaders([...tableHeaders]);
+    const newHeaders = JSON.parse(JSON.stringify(tableHeaders))
+    setTableHeaders(newHeaders);
     setIsModalVisible(false);
   }
 
@@ -88,6 +88,7 @@ export const Table = ({
       headers: [...tableHeaders],
       data: tableData
     };
+    onSendData(editedData)
     return editedData;
   };
 
@@ -177,7 +178,7 @@ export const Table = ({
       <button 
         type='button' 
         onClick={sendData}
-        className={classNames(detectClass('sendButton'))}
+        className={classNames(classes.sendButton, detectClass('sendButton'))}
       >
         Send data to user
       </button>
@@ -204,3 +205,5 @@ Table.propTypes = {
   minColumnSize: PropTypes.number.isRequired,
   tableClasses: PropTypes.shape({}).isRequired
 }
+
+export default Table;

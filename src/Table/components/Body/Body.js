@@ -15,7 +15,7 @@ const Body = ({
       {
         tableData.map((item, i) => {
           return (
-            <tr key={i} className={detectClass('tableBodyRow')}>
+            <tr key={i} className={classNames(classes.tr, detectClass('tableBodyRow'))}>
               {
                 tableHeaders.map((header, j) => {
                   const value = item[header] || emptyCellPlaceholder;
