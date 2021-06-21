@@ -2,3 +2,7 @@ src
 demo
 .babelrc
 webpack.config.js
+.eslintcache
+.eslintrs
+.stylelint.js
+.public
