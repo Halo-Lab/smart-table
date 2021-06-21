@@ -27,7 +27,6 @@ module.exports = {
         test: /\.module\.s(a|c)ss$/,
         loader: [
           'style-loader',
-          // isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
