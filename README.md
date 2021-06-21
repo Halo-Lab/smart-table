@@ -4,7 +4,7 @@ Using the react-smart-dynamic-table you can dynamically add, edit, delete column
 
 # Demo
 
-[DEMO LINK] (https://codesandbox.io/s/nifty-jennings-8cu39?file=/src/App.js)
+[DEMO LINK](https://codesandbox.io/s/nifty-jennings-8cu39?file=/src/App.js)
 
 # Installation 
 
