@@ -3,6 +3,6 @@ demo
 .babelrc
 webpack.config.js
 .eslintcache
-.eslintrs
-.stylelint.js
-.public
+.eslintrc
+.stylelintrc.js
+public
