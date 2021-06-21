@@ -1,11 +1,11 @@
 {
   "name": "react-smart-dynamic-table",
-  "version": "1.0.14",
+  "version": "1.0.19",
   "description": "A simple dynamic react table",
   "main": "./lib/index.js",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/liliya-dev/smart-dynamic-table"
   },
   "keywords": [
     "react",
@@ -15,10 +15,9 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "start": "react-scripts start index.js"
+    "build": "webpack"
   },
-  "author": "Weian Wang",
+  "author": "",
   "bugs": {
     "url": ""
   },
@@ -42,7 +41,5 @@
     "style-loader": "^1.1.3",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
-  },
-  "dependencies": {
   }
 }

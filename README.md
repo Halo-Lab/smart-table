@@ -16,7 +16,7 @@ Using the react-smart-dynamic-table you can dynamically add, edit, delete column
 | ------------- |-------------| -----| ------------- |-------------|
 | tableColumns      | yes | arrayof({ header: string, columnData: arrayof(string)}) | initial table data      | ``` tableColumns = {[{ header: 'company', columnData: ['adidas', 'nike', 'puma', 'reebok'] },  { header: 'founded', columnData: ['1949', '1964', '1948', '1958'] }]}```|
 | emptyCellPlaceholder      | no      |   string | empty cell placeholder      | ```emptyCellPlaceholder="empty" ```|
-| tableClasses | no      |   object | keys are values from STYLING section, values are your custom classes | ``` tableClasses={{  table: classes.table,  addRowButton: classes.addRowButton, sendButton: classes.sendButton }} ```      |
+| tableClasses | no      |   object | keys are values from STYLING section, values are your custom classes, or array of classes | ``` tableClasses={{  table: classes.table,  addRowButton: classes.addRowButton, sendButton: [classes.sendButton, classes.mt] }} ```      |
 | cellSpacing | no      |    string | value to define gap between cells | ```cellSpacing = "300"```      |
 | minColumnSize | no      |    number | value to define minimal size of table columns (default ```300px```) | ````minColumnSize={200}```     |
 | onCeilEdit | no      |    function | gets new Table data as a prop, emmits when edit cell | -    |
@@ -80,7 +80,7 @@ function App() {
         tableClasses={{ 
             container: classes.container, 
             addRowButton: classes.addRowButton,
-            sendButton: classes.sendButton
+             sendButton: [classes.sendButton, classes.mt]
           }}
       />
     </div>
@@ -100,6 +100,10 @@ export default App;
   .sendButton {
     background-color: black;
     color: white;
+  }
+
+  .mt {
+    margin-top: 30px;
   }
 
   .container {
