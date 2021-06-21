@@ -19,7 +19,7 @@ const Cell = ({
 
   useEffect(() =>{
     setInputValue(value);
-  }, [tableHeaders])
+  }, [tableHeaders, value])
 
   const handleChange = (value) => {
     setInputValue(value);

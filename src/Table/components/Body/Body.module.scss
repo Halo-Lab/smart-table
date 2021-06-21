@@ -13,6 +13,20 @@ tr, td, th {
 
 .tr {
   height: 30px;
+  position: relative;
 }
 
-//need to add opportunity to delete columns
+.deleteRowButton {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+
+  width: 24px;
+  height: 24px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+}

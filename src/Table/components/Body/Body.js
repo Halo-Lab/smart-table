@@ -1,5 +1,5 @@
 /* eslint react/no-array-index-key: 0 */
-import React from 'react';
+import React, { useState } from 'react';
 
 import TextareaAutosize from 'react-textarea-autosize';
 import PropTypes from "prop-types";
@@ -8,14 +8,25 @@ import classes from './Body.module.scss';
 
 const Body = ({ 
   tableData, tableHeaders, emptyCellPlaceholder, editCeil, detectClass,
-  onCeilBlur, minColumnSize
+  onCeilBlur, minColumnSize, deleteRow
 }) => {
+  const [selectedRow, setSelectedRow] = useState(-1);
+
   return (
     <tbody className={detectClass('tableBody')}>
       {
         tableData.map((item, i) => {
           return (
-            <tr key={i} className={classNames(classes.tr, detectClass('tableBodyRow'))}>
+            <tr 
+              key={i} 
+              className={classNames(classes.tr, detectClass('tableBodyRow'))}
+              onMouseEnter={() => {
+                setSelectedRow(i)
+              }}
+              onMouseLeave={() => {
+                setSelectedRow(-1)
+              }}
+            >
               {
                 tableHeaders.map((header, j) => {
                   const value = item[header] || emptyCellPlaceholder;
@@ -30,6 +41,17 @@ const Body = ({
                     </td>
                   )
                 })
+              }
+              {
+                i === selectedRow && (
+                  <button 
+                    type="button"
+                    className={classNames(classes.deleteRowButton, detectClass('deleteRowButton'))}
+                    onClick={() => deleteRow(i)}
+                  >
+                    &#x2715;
+                  </button>
+                )
               }
             </tr>
           )

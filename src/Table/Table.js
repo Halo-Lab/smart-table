@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import PropTypes from "prop-types";
 
-import classes from './Table.module';
+import classes from './Table.module.scss';
 import Header from './components/Header';
 import Body from './components/Body';
 import Modal from './components/Modal';
@@ -118,12 +118,17 @@ const Table = ({
     setTableHeaders(newHeaders);
   }
 
+  const deleteRow = (index) => {
+    const newTableData = [...tableData.slice(0, index), ...tableData.slice(index + 1)];
+    setTableData(newTableData);
+  }
+
   const detectClass = (key) => {
     return tableClasses[key] || '';
   }
 
   return (
-    <div className={classes.container}>
+    <div className={classNames(classes.container, detectClass('container'))}>
       <button 
         type="button" 
         onClick={addColumn} 
@@ -154,6 +159,7 @@ const Table = ({
             detectClass={detectClass}
             onCeilBlur={onCeilBlur}
             minColumnSize={minColumnSize}
+            deleteRow={deleteRow}
           />
         </table>
       </div>
@@ -186,24 +192,35 @@ const Table = ({
   )
 }
 
+Table.defaultProps = {
+  emptyCellPlaceholder: '',
+  cellSpacing: '0',
+  onCeilEdit: (value) => value,
+  onCeilBlur: (value) => value,
+  onHeaderEdit: (value) => value,
+  onHeaderBlur: (value) => value,
+  minColumnSize: 300,
+  tableClasses: {}
+}
+
 Table.propTypes = {
   tableColumns: PropTypes.arrayOf(
     PropTypes.shape({
       header: PropTypes.string,
-      columnData: PropTypes.oneOfType([
+      columnData: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-      ]),
+      ])),
     })
   ).isRequired,
-  emptyCellPlaceholder: PropTypes.string.isRequired,
-  cellSpacing: PropTypes.string.isRequired,
-  onCeilEdit: PropTypes.func.isRequired,
-  onCeilBlur: PropTypes.func.isRequired,
-  onHeaderEdit: PropTypes.func.isRequired,
-  onHeaderBlur: PropTypes.func.isRequired,
-  minColumnSize: PropTypes.number.isRequired,
-  tableClasses: PropTypes.shape({}).isRequired
+  emptyCellPlaceholder: PropTypes.string,
+  cellSpacing: PropTypes.string,
+  onCeilEdit: PropTypes.func,
+  onCeilBlur: PropTypes.func,
+  onHeaderEdit: PropTypes.func,
+  onHeaderBlur: PropTypes.func,
+  minColumnSize: PropTypes.number,
+  tableClasses: PropTypes.shape({})
 }
 
 export default Table;

@@ -38,17 +38,21 @@ Using the react-smart-dynamic-table you can dynamically add, edit, delete column
   * modalSetButton
   * modalCloseButton
   ### Table
+  * container
   * table
   * tableHead
   * tableHeadRow
   * tableHeadCell
   * tableHeadTextarea
   * deleteButton
+  * deleteRowButton
   * tableBody
   * tableBodyRow
   * tableBodyCeilTextarea
 
 # Usage
+
+### App.js
 
 ```javascript
 import Table from 'react-smart-dynamic-table'
@@ -74,7 +78,7 @@ function App() {
       <Table 
         tableColumns={tableColumns}
         tableClasses={{ 
-            table: classes.table, 
+            container: classes.container, 
             addRowButton: classes.addRowButton,
             sendButton: classes.sendButton
           }}
@@ -86,6 +90,22 @@ function App() {
 export default App;
 ```
 
+### App.module.scss
+
+```
+  .addRowButton {
+    color: red;
+  }
+
+  .sendButton {
+    background-color: black;
+    color: white;
+  }
+
+  .container {
+    margin-top: 20px;
+  }
+```
 expected result:
 
 ![alt text](https://p26.f0.n0.cdn.getcloudapp.com/items/d5u1oGoq/b5f679db-4415-478c-ad39-3e94db4df831.jpg?source=viewer&v=79489c5f5b01e964a459fbe9850f2111)
