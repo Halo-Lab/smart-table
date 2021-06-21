@@ -112,4 +112,4 @@ export default App;
 ```
 expected result:
 
-![alt text](https://p26.f0.n0.cdn.getcloudapp.com/items/d5u1oGoq/b5f679db-4415-478c-ad39-3e94db4df831.jpg?source=viewer&v=79489c5f5b01e964a459fbe9850f2111)
+![alt text](/public/result.jpg)
