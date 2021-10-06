@@ -29,6 +29,7 @@ const Table = ({
   const [activeHeaderValue, setActiveHeaderValue] = useState('');
   const [activeHeaderIndex, setActiveHeaderIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
+  const [showColNumbers, setSowColNumbers] = useState(false);
 
   const tableRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -98,6 +99,12 @@ const Table = ({
     setScroll(hiddenWidth);
   };
 
+  const columnsNumberSwitch = () => {
+    setSowColNumbers(!showColNumbers)
+    const hiddenWidth = tableRef.current.clientWidth;
+    setScroll(hiddenWidth);
+  }
+
   const addRow = () => {
     const newRow = {};
     tableHeaders.forEach(header => {
@@ -150,6 +157,7 @@ const Table = ({
             onHeaderEdit={onHeaderEdit}
             deleteColumn={deleteColumn}
             minColumnSize={minColumnSize}
+            showColNumbers={showColNumbers}
           />
           <Body 
             tableData={tableData}
@@ -187,6 +195,13 @@ const Table = ({
         className={classNames(classes.sendButton, detectClass('sendButton'))}
       >
         Send data to user
+      </button>
+      <button 
+        type="button" 
+        onClick={columnsNumberSwitch} 
+        className={classNames(classes.sendButton, detectClass('sendButton'))}
+      >
+         show or hide columns number
       </button>
     </div>
   )

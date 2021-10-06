@@ -1,6 +1,6 @@
 const fs = require('fs');
 const hound = require('hound')
-const { execSync } = require('child_process');
+const { execSync,exec } = require('child_process');
 
 function injectScript() {
     execSync(' npm run build')
