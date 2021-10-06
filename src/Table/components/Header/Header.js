@@ -52,6 +52,7 @@ Header.propTypes = {
   onHeaderEdit: PropTypes.func.isRequired,
   minColumnSize: PropTypes.number.isRequired,
   deleteColumn: PropTypes.func.isRequired,
+  showColNumbers: PropTypes.bool,
 };
 
 export default Header;
