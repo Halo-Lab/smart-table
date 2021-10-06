@@ -31,6 +31,9 @@ const Table = ({
   const [scroll, setScroll] = useState(0);
   const [showColNumbers, setSowColNumbers] = useState(false);
 
+  const [isArabic, setIsArabic] = useState(false);
+
+
   const tableRef = useRef(null);
   const wrapperRef = useRef(null);
 
@@ -99,10 +102,16 @@ const Table = ({
     setScroll(hiddenWidth);
   };
 
+  const numberFormatConfirm = () => {
+    if (confirm('Are you want rome numbers or arabic ?Yes rome , no arabic')) {
+      setIsArabic(true)
+    } else {
+      setIsArabic(false)
+    }
+  }
   const columnsNumberSwitch = () => {
+    !showColNumbers && numberFormatConfirm()
     setSowColNumbers(!showColNumbers)
-    const hiddenWidth = tableRef.current.clientWidth;
-    setScroll(hiddenWidth);
   }
 
   const addRow = () => {
@@ -158,6 +167,7 @@ const Table = ({
             deleteColumn={deleteColumn}
             minColumnSize={minColumnSize}
             showColNumbers={showColNumbers}
+            isArabic={isArabic}
           />
           <Body 
             tableData={tableData}

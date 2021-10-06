@@ -3,6 +3,7 @@ import classNames from "classnames";
 import PropTypes from "prop-types";
 import Cell from "./components/Cell";
 import classes from "./Header.module.scss";
+import { convertToRoman } from "../../utils";
 
 const Header = ({
   tableHeaders,
@@ -11,7 +12,8 @@ const Header = ({
   onHeaderEdit,
   minColumnSize,
   deleteColumn,
-  showColNumbers
+  showColNumbers,
+  isArabic,
 }) => {
   const [selectedHeader, setSelectedHeader] = useState(-1);
 
@@ -37,10 +39,17 @@ const Header = ({
         })}
       </tr>
       <tr>
-        {showColNumbers ? tableHeaders.map((item,i) => {
-          return <th colSpan={1}>{i+1}</th>
-        }): ""}
-      </tr> 
+        {showColNumbers && isArabic
+          ? tableHeaders.map((item, i) => {
+              const number = convertToRoman(i+1);
+              return <th colSpan={1}>{number}</th>;
+            })
+          : showColNumbers
+          ? tableHeaders.map((item, i) => {
+              return <th colSpan={1}>{i+1}</th>;
+            })
+          : ""}
+      </tr>
     </thead>
   );
 };
@@ -53,6 +62,7 @@ Header.propTypes = {
   minColumnSize: PropTypes.number.isRequired,
   deleteColumn: PropTypes.func.isRequired,
   showColNumbers: PropTypes.bool,
+  isArabic: PropTypes.bool,
 };
 
 export default Header;
