@@ -4,16 +4,21 @@ const { execSync,exec } = require('child_process');
 
 function injectScript() {
     execSync(' npm run build')
-    let projectFolder;
+    let projectFolder= null;
 
     // get project folder name
     fs.readdirSync('../').forEach(file => {
-        if(file !== 'smart-table'){
-            projectFolder=file
+        if(file !== 'smart-table' && projectFolder === null){
+            projectFolder=file;
+        } else if (projectFolder) {
+          throw new Error('Too many folders  !');
         }
       });
-    
-    //copy file to lib folder project
+
+    if(projectFolder === null) {
+       throw new Error('Can not find project folder !')
+    }
+      //copy file to lib folder project
     fs.copyFile('./lib/index.js', `../${projectFolder}/node_modules/react-smart-dynamic-table/lib/index.js`, (err) => {
         if (err) throw err;
         console.log('\x1b[33m%s\x1b[0m','Script was injected to project !');

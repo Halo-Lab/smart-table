@@ -43,6 +43,7 @@ const Table = ({
     }
   }, [scroll])
 
+  
   const editHeaderTitle = (index, value) => {
     const newHeaders = [...tableHeaders];
     newHeaders[index] = value;
