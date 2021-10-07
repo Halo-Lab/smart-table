@@ -5,7 +5,6 @@
 }
 
 .wrapper {
-  width: 100%;
   position: relative;
   overflow-x: auto;
   border: 1px solid grey;
@@ -24,7 +23,7 @@
 
   position: absolute;
   top: calc(50% - 12px);
-  right: -12px;
+  right: 26px;
   z-index: 4;
 
   cursor: pointer;
