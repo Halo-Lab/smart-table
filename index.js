@@ -2,7 +2,7 @@ const fs = require("fs");
 const hound = require("hound");
 const { execSync, exec } = require("child_process");
 
-function injectScript() {
+const  injectScript = () => {
   execSync(" npm run build");
   let projectFolder = null;
 
@@ -32,7 +32,7 @@ function injectScript() {
 
 injectScript();
 
-function startWatch() {
+const startWatch =() =>{
 
   const watcher = hound.watch("./src");
   watcher.on("change", function (file) {
